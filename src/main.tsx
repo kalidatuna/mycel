@@ -11,6 +11,17 @@ import './styles/editor.css'
 
 registerBuiltins()
 
+// Test/debug hook (development builds only): lets end-to-end tests read files from the vault.
+if (import.meta.env.DEV) {
+  void Promise.all([import('./vault/session'), import('./vault/loader'), import('./fs/fsAccess')]).then(([{ session }, { openVault }, { FsAccessFS }]) => {
+    ;(window as unknown as { __mycel: unknown }).__mycel = {
+      read: (p: string) => session.fs?.read(p).then((r) => r.text),
+      exists: (p: string) => session.fs?.exists(p),
+      openHandle: (h: FileSystemDirectoryHandle) => openVault(new FsAccessFS(h)),
+    }
+  })
+}
+
 // Save in-flight edits when the tab is hidden or closed.
 addEventListener('visibilitychange', () => document.visibilityState === 'hidden' && void flushAll())
 addEventListener('beforeunload', (e) => {
