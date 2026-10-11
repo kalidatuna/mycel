@@ -90,7 +90,7 @@ const builtins: Command[] = [
     when: ready,
     run: () => {
       useUi.getState().setLeftTab('search')
-      setTimeout(() => document.getElementById('global-search')?.focus(), 0)
+      useUi.getState().requestFocus('search')
     },
   },
   { id: 'new-note', name: 'New note', hotkey: 'Alt+N', when: ready, run: () => newNoteIn(dirname(activePath() ?? '')) },
@@ -119,7 +119,7 @@ const builtins: Command[] = [
     when: ready,
     run: () => {
       useUi.getState().setLeftTab('files')
-      setTimeout(() => (document.querySelector('[role=tree] [tabindex="0"]') as HTMLElement | null)?.focus(), 0)
+      useUi.getState().requestFocus('tree')
     },
   },
   { id: 'tags', name: 'Show tags', when: ready, run: () => useUi.getState().setLeftTab('tags') },

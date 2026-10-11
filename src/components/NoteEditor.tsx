@@ -37,6 +37,8 @@ export function NoteEditor({ pane, paneIdx }: { pane: Pane; paneIdx: number }) {
   const entryRef = useRef<DocEntry | null>(null)
   const pathRef = useRef<string | null>(pane.active)
   const timers = useRef(new Map<DocEntry, ReturnType<typeof setTimeout>>())
+  /** Registry key each entry's pending save was filed under (paths can change on rename). */
+  const pendingKeys = useRef(new Map<DocEntry, string>())
   const [conflict, setConflict] = useState(false)
   const version = useVaultVersion()
   const anchor = useWorkspace((s) => s.anchor)
@@ -83,7 +85,8 @@ export function NoteEditor({ pane, paneIdx }: { pane: Pane; paneIdx: number }) {
     entry.synced = text
     try {
       await saveNote(entry.holder.path, text)
-      setPending(pane.id + entry.holder.path, null)
+      setPending(pendingKeys.current.get(entry) ?? pane.id + entry.holder.path, null)
+      pendingKeys.current.delete(entry)
       useSaveState.getState().set('saved')
     } catch (e) {
       entry.synced = before
@@ -97,7 +100,9 @@ export function NoteEditor({ pane, paneIdx }: { pane: Pane; paneIdx: number }) {
     if (t) clearTimeout(t)
     const f = flush(entry)
     timers.current.set(entry, setTimeout(f, SAVE_DELAY))
-    setPending(pane.id + entry.holder.path, f)
+    const key = pendingKeys.current.get(entry) ?? `${pane.id}:${entry.holder.path}`
+    pendingKeys.current.set(entry, key)
+    setPending(key, f)
     useSaveState.getState().set('pending')
   }
 
@@ -202,7 +207,8 @@ export function NoteEditor({ pane, paneIdx }: { pane: Pane; paneIdx: number }) {
     const t = timers.current.get(entry)
     if (t) clearTimeout(t)
     timers.current.delete(entry)
-    setPending(pane.id + entry.holder.path, null)
+    setPending(pendingKeys.current.get(entry) ?? '', null)
+    pendingKeys.current.delete(entry)
     syncDoc(view, note.text)
     entry.synced = note.text
     setConflict(false)

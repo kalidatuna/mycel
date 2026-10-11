@@ -71,11 +71,11 @@
   padding: 0 12px !important;
 }
 .cm-fm-first {
-  border-radius: 8px 8px 0 0;
+  border-radius: 4px 4px 0 0;
   padding-top: 6px !important;
 }
 .cm-fm-last {
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 4px 4px;
   padding-bottom: 6px !important;
   margin-bottom: 8px;
 }
@@ -101,11 +101,7 @@
   cursor: pointer;
 }
 .cm-tag {
-  background: var(--accent-soft);
-  color: var(--accent-strong);
-  border-radius: 999px;
-  padding: 1px 7px;
-  font-size: 0.88em;
+  color: var(--accent);
   cursor: pointer;
 }
 .cm-inline-code {
@@ -118,7 +114,7 @@
 
 /* blocks */
 .cm-quote {
-  border-left: 3px solid var(--accent);
+  border-left: 2px solid var(--border-strong);
   padding-left: 14px !important;
   color: var(--text-muted);
   font-style: italic;
@@ -129,12 +125,12 @@
   padding: 0 14px !important;
 }
 .cm-codeblock-first {
-  border-radius: 8px 8px 0 0;
+  border-radius: 4px 4px 0 0;
   padding-top: 6px !important;
   color: var(--text-faint);
 }
 .cm-codeblock-last {
-  border-radius: 0 0 8px 8px;
+  border-radius: 0 0 4px 4px;
   padding-bottom: 6px !important;
   color: var(--text-faint);
 }
@@ -146,8 +142,7 @@
   background: var(--border-strong);
 }
 .cm-bullet {
-  color: var(--accent);
-  font-weight: 700;
+  color: var(--text-faint);
   display: inline-block;
   width: 0.7em;
 }
@@ -168,7 +163,7 @@
 .cm-tooltip.cm-tooltip-autocomplete {
   background: var(--bg-elev);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   overflow: hidden;
   font-family: var(--font-ui);
@@ -182,7 +177,7 @@
   font-size: 13.5px;
 }
 .cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected] {
-  background: var(--accent-soft);
+  background: var(--bg-hover);
   color: var(--text-strong);
 }
 .cm-completionDetail {

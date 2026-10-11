@@ -1,5 +1,4 @@
-import { useEffect } from 'react'
-import { commandForEvent, runCommand } from '../commands/registry'
+import { runCommand } from '../commands/registry'
 import { useSaveState } from '../editor/stateCache'
 import { useUi, type LeftTab } from '../store/ui'
 import { useVault } from '../store/vault'
@@ -7,6 +6,7 @@ import { FileTree } from './FileTree'
 import { useActiveNote } from './hooks'
 import { Icon, Logo } from './Icon'
 import { Modals } from './Modals'
+import { Toasts } from './Overlay'
 import { RightSidebar } from './RightSidebar'
 import { SearchPanel } from './SearchPanel'
 import { TagBrowser } from './TagBrowser'
@@ -29,7 +29,7 @@ function Ribbon() {
   return (
     <nav className="ribbon" aria-label="Main">
       <div className="ribbon-logo" title="Mycel">
-        <Logo size={24} />
+        <Logo size={20} />
       </div>
       {tab('files', 'files', 'Files')}
       {tab('search', 'search', 'Search (Ctrl+Shift+F)')}
@@ -61,8 +61,8 @@ function StatusBar() {
   return (
     <footer className="statusbar">
       <span className="status-vault">
-        <Icon name={kind === 'memory' ? 'sparkle' : 'folder'} size={13} /> {name}
-        {kind === 'memory' && <span className="pill">demo · changes stay in this tab</span>}
+        <Icon name={kind === 'memory' ? 'book' : 'folder'} size={13} /> {name}
+        {kind === 'memory' && <span className="pill">· in memory, changes are not saved to disk</span>}
       </span>
       <span className="status-spacer" />
       {note && <span>{words.toLocaleString()} words</span>}
@@ -72,38 +72,6 @@ function StatusBar() {
       </span>
     </footer>
   )
-}
-
-function Toasts() {
-  const toasts = useUi((s) => s.toasts)
-  return (
-    <div className="toasts" role="status" aria-live="polite">
-      {toasts.map((t) => (
-        <div key={t.id} className={'toast ' + t.kind}>
-          <span>{t.text}</span>
-          <button className="icon-btn small" aria-label="Dismiss" onClick={() => useUi.getState().dismissToast(t.id)}>
-            <Icon name="x" size={13} />
-          </button>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-export function GlobalKeys() {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (useUi.getState().modal) return
-      const cmd = commandForEvent(e)
-      if (!cmd) return
-      e.preventDefault()
-      e.stopPropagation()
-      void cmd.run()
-    }
-    window.addEventListener('keydown', onKey, true)
-    return () => window.removeEventListener('keydown', onKey, true)
-  }, [])
-  return null
 }
 
 export function Shell() {
@@ -130,4 +98,3 @@ export function Shell() {
   )
 }
 
-export { Toasts }

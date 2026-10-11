@@ -1,4 +1,4 @@
-import { useDeferredValue, useMemo } from 'react'
+import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
 import type { SearchHit } from '../core/search'
 import { useUi } from '../store/ui'
 import { useWorkspace } from '../store/workspace'
@@ -21,6 +21,11 @@ export function SearchPanel() {
   const setQuery = useUi((s) => s.setSearchQuery)
   const open = useWorkspace((s) => s.open)
   const deferred = useDeferredValue(query)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const focusRequest = useUi((s) => s.focusRequest)
+  useEffect(() => {
+    if (focusRequest?.target === 'search') inputRef.current?.select()
+  }, [focusRequest])
 
   const { hits, ms } = useMemo(() => {
     const t0 = performance.now()
@@ -50,6 +55,7 @@ export function SearchPanel() {
       <div className="search-box">
         <input
           id="global-search"
+          ref={inputRef}
           className="input"
           type="search"
           placeholder="Search notes…  (try tag:coffee)"

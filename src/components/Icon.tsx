@@ -21,7 +21,7 @@ const paths: Record<string, string> = {
   list: 'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
   info: 'M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18zM12 11v5M12 8h.01',
   logout: 'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10',
-  sparkle: 'M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z',
+  book: 'M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h10',
   graph: 'M6 6a2 2 0 1 1 0 .1zM18 8a2 2 0 1 1 0 .1zM12 18a2 2 0 1 1 0 .1zM7.5 7l9 1M7 7.5l4.3 9M17 9.8l-4 6.6',
   folderOpen: 'M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v1H7l-4 9z',
   plus: 'M12 5v14M5 12h14',
@@ -48,22 +48,14 @@ export function Icon({ name, size = 18, className }: { name: keyof typeof paths 
   )
 }
 
-export function Logo({ size = 28 }: { size?: number }) {
+/** Wordmark glyph: three nodes joined underneath. Monochrome, follows the text colour. */
+export function Logo({ size = 20 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
-      <rect width="64" height="64" rx="14" fill="var(--accent)" />
-      <g stroke="var(--accent-text)" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.9">
-        <path d="M32 50V30M32 30l-12-10M32 30l12-8M20 20l-6 4M44 22l6-6M32 40l-10 4M32 38l9 5" />
-      </g>
-      <g fill="var(--accent-text)">
-        <circle cx="32" cy="30" r="4" />
-        <circle cx="20" cy="20" r="3" />
-        <circle cx="44" cy="22" r="3" />
-        <circle cx="14" cy="24" r="2" />
-        <circle cx="50" cy="16" r="2" />
-        <circle cx="22" cy="44" r="2.5" />
-        <circle cx="41" cy="43" r="2.5" />
-      </g>
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round">
+      <path d="M5 7c0 6 7 4 7 11M19 7c0 6-7 4-7 11M12 5v13" />
+      <circle cx="5" cy="5" r="2" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="4" r="2" fill="currentColor" stroke="none" />
+      <circle cx="19" cy="5" r="2" fill="currentColor" stroke="none" />
     </svg>
   )
 }

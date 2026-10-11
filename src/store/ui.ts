@@ -32,6 +32,9 @@ interface UiState {
   modal: Modal | null
   toasts: Toast[]
   searchQuery: string
+  /** Bumped to ask a panel to take keyboard focus once it has rendered. */
+  focusRequest: { target: 'search' | 'tree'; seq: number } | null
+  requestFocus(target: 'search' | 'tree'): void
   setTheme(t: Theme): void
   setLeftTab(t: LeftTab): void
   toggleLeft(): void
@@ -62,6 +65,8 @@ export const useUi = create<UiState>((set, get) => ({
   modal: null,
   toasts: [],
   searchQuery: '',
+  focusRequest: null,
+  requestFocus: (target) => set({ focusRequest: { target, seq: (get().focusRequest?.seq ?? 0) + 1 } }),
   setTheme(theme) {
     try {
       localStorage.setItem('mycel.theme', theme)

@@ -61,12 +61,25 @@ test('renaming a note rewrites links across the vault', async ({ page }) => {
 
 test('global search shows highlighted snippets', async ({ page }) => {
   await page.keyboard.press('Control+Shift+F')
-  await page.getByRole('searchbox', { name: 'Search all notes' }).fill('stampede')
+  // Type straight away: the shortcut must leave focus in the search box.
+  await page.keyboard.type('stampede')
+  await expect(page.getByRole('searchbox', { name: 'Search all notes' })).toHaveValue('stampede')
   const first = page.locator('.search-results .result').first()
   await expect(first).toContainText('Incident 2026-05-19 Cache Stampede')
   await expect(first.locator('mark').first()).toHaveText(/stampede/i)
   await first.click()
   await expect(page.getByRole('tab', { name: /Cache Stampede/, selected: true })).toBeVisible()
+})
+
+test('app shortcuts do not leak to the browser while a dialog is open', async ({ page }) => {
+  await page.keyboard.press('Control+o')
+  await expect(page.getByRole('dialog', { name: 'Quick switcher' })).toBeVisible()
+  const leaked = await page.evaluate(() => {
+    const e = new KeyboardEvent('keydown', { key: 'p', code: 'KeyP', ctrlKey: true, bubbles: true, cancelable: true })
+    document.activeElement!.dispatchEvent(e)
+    return !e.defaultPrevented
+  })
+  expect(leaked).toBe(false)
 })
 
 test('command palette runs commands', async ({ page }) => {

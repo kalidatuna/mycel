@@ -39,16 +39,17 @@ export function formatHotkey(h: string) {
     .join(isMac ? '' : '+')
 }
 
+const CODE_KEYS: Record<string, string> = { Period: '.', Comma: ',', BracketLeft: '[', BracketRight: ']', Backslash: '\\', Slash: '/', Minus: '-', Equal: '=' }
+
 export function matchesHotkey(e: KeyboardEvent, h: string): boolean {
   const parts = h.split('+')
   const key = parts.pop()!.toLowerCase()
   const want = { mod: parts.includes('Mod'), shift: parts.includes('Shift'), alt: parts.includes('Alt') }
   const mod = isMac ? e.metaKey : e.ctrlKey
   if (mod !== want.mod || e.shiftKey !== want.shift || e.altKey !== want.alt) return false
-  // e.code keeps Alt+letter working on macOS where Alt changes e.key.
-  const code = e.code.startsWith('Key') ? e.code.slice(3).toLowerCase() : e.code.startsWith('Digit') ? e.code.slice(5) : null
-  const k = e.key.toLowerCase()
-  return k === key || code === key || (key === '\\' && e.code === 'Backslash')
+  // e.code keeps Alt/Shift combinations working where they change e.key (Alt+. on macOS, Shift+[).
+  const code = e.code.startsWith('Key') ? e.code.slice(3).toLowerCase() : e.code.startsWith('Digit') ? e.code.slice(5) : (CODE_KEYS[e.code] ?? null)
+  return e.key.toLowerCase() === key || code === key
 }
 
 export function commandForEvent(e: KeyboardEvent): Command | undefined {

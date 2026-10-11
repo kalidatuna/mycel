@@ -3,7 +3,7 @@ import { movePath, newFolderIn, newNoteIn, renamePath, trashPath } from '../comm
 import { basename, dirname, stripMd } from '../core/paths'
 import { useVault } from '../store/vault'
 import { useWorkspace } from '../store/workspace'
-import { toast } from '../store/ui'
+import { toast, useUi } from '../store/ui'
 import * as actions from '../vault/actions'
 import { session } from '../vault/session'
 import { ContextMenu, type MenuItem } from './ContextMenu'
@@ -48,6 +48,11 @@ export function FileTree() {
   const [menu, setMenu] = useState<{ x: number; y: number; items: MenuItem[] } | null>(null)
   const [dropTarget, setDropTarget] = useState<string | null>(null)
   const treeRef = useRef<HTMLDivElement>(null)
+
+  const focusRequest = useUi((s) => s.focusRequest)
+  useEffect(() => {
+    if (focusRequest?.target === 'tree') (treeRef.current?.querySelector('[tabindex="0"]') as HTMLElement | null)?.focus()
+  }, [focusRequest])
 
   // Reveal the active note's folder when it changes.
   useEffect(() => {

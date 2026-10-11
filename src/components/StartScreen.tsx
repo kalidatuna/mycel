@@ -41,18 +41,24 @@ export function StartScreen() {
     setSaved(null)
   }
 
+  const brand = (
+    <div className="start-brand">
+      <Logo size={22} />
+      <h1>Mycel</h1>
+    </div>
+  )
+
   if (status === 'loading') {
     const pct = progress.total ? Math.round((progress.done / progress.total) * 100) : 0
     return (
       <main className="start">
         <div className="start-card" aria-busy="true">
-          <Logo size={44} />
-          <h1>Reading your notes…</h1>
-          <div className="progress" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+          {brand}
+          <div className="progress" role="progressbar" aria-label="Reading notes" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
             <div style={{ width: `${pct}%` }} />
           </div>
           <p className="muted">
-            {progress.done} / {progress.total} notes
+            Reading notes… {progress.done} of {progress.total}
           </p>
         </div>
       </main>
@@ -62,54 +68,48 @@ export function StartScreen() {
   return (
     <main className="start">
       <div className="start-card">
-        <Logo size={52} />
-        <h1>Mycel</h1>
-        <p className="tagline">Your notes, connected underneath.</p>
-        <p className="muted start-sub">
-          Open any folder of markdown notes. Mycel reads <code>[[wikilinks]]</code>, <code>#tags</code> and frontmatter, keeps
-          everything on this computer, and never changes a file it doesn&apos;t need to.
+        {brand}
+        <p className="start-sub">
+          A markdown notes app that works on a folder you already have. It reads <code>[[links]]</code>, <code>#tags</code> and
+          frontmatter, and only writes to a file when you change it.
         </p>
         <div className="start-actions">
+          {!supported && (
+            <p className="notice">This browser can&apos;t open local folders. Use Chrome, Edge or another Chromium browser on desktop, or try the demo.</p>
+          )}
           {saved && supported && (
-            <button className="btn primary" onClick={reopen} disabled={busy}>
-              <Icon name="folderOpen" /> Reopen “{saved.name}”
+            <button className="start-action" onClick={reopen} disabled={busy}>
+              <Icon name="folderOpen" />
+              <strong>Reopen {saved.name}</strong>
+              <small>Last folder you used</small>
             </button>
           )}
-          {supported ? (
-            <button className={saved ? 'btn' : 'btn primary'} onClick={open} disabled={busy}>
-              <Icon name="folder" /> Open a notes folder
+          {supported && (
+            <button className="start-action" onClick={open} disabled={busy}>
+              <Icon name="folder" />
+              <strong>Open folder…</strong>
+              <small>Any folder of .md files</small>
             </button>
-          ) : (
-            <p className="notice">
-              This browser can&apos;t open local folders. Use a desktop Chromium browser (Chrome, Edge, Arc, Brave) for your own
-              notes — or try the demo below.
-            </p>
           )}
-          <button className="btn" onClick={() => run(openDemoVault)} disabled={busy} data-testid="demo-button">
-            <Icon name="sparkle" /> Try the demo vault
+          <button className="start-action" onClick={() => run(openDemoVault)} disabled={busy} data-testid="demo-button">
+            <Icon name="book" />
+            <strong>Try the demo vault</strong>
+            <small>65 sample notes, kept in memory</small>
           </button>
         </div>
-        {saved && supported && (
-          <button className="link-btn" onClick={forget}>
-            Forget “{saved.name}”
-          </button>
-        )}
         {(msg || error) && (
           <p className="error" role="alert">
             {msg || error}
           </p>
         )}
-        <ul className="start-points">
-          <li>
-            <Icon name="check" size={15} /> Works on your existing folder, as-is
-          </li>
-          <li>
-            <Icon name="check" size={15} /> Local and private: no account, no server, no tracking
-          </li>
-          <li>
-            <Icon name="check" size={15} /> Deleted notes go to <code>.trash</code>, never gone
-          </li>
-        </ul>
+        <p className="start-foot">
+          <span>Runs locally. No account, no server, no tracking.</span>
+          {saved && supported && (
+            <button className="link-btn" onClick={forget}>
+              Forget {saved.name}
+            </button>
+          )}
+        </p>
       </div>
     </main>
   )
