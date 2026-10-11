@@ -5,26 +5,26 @@ finds the links you missed, replays how your thinking grew, and tells you where 
 disagree with each other — all on your machine.
 
 ## Phase 0: Setup
-- [ ] CLAUDE.md, PLAN.md, ARCHITECTURE.md
-- [ ] Scaffold Vite + React + TS strict, Vitest, Playwright, ESLint
-- [ ] Demo vault: ~60 notes, 8+ months of dates, orphans, near-duplicates, corrected claims, 2+ contradiction pairs
-- [ ] Demo vault dates applied on install, bundled for "Try the demo vault"
+- [x] CLAUDE.md, PLAN.md, ARCHITECTURE.md
+- [x] Scaffold Vite + React + TS strict, Vitest, Playwright, ESLint
+- [x] Demo vault: 65 notes, Jan–Oct 2026 dates, orphans, near-duplicates, corrected claims, 3 contradiction pairs
+- [x] Demo vault dates applied on install, bundled for "Try the demo vault"
 
 ## Phase 1: Core app
-- [ ] Open folder (File System Access), remember across sessions, watch for changes
-- [ ] File tree: create, rename (rewrites inbound links), move, delete to `.trash/`
-- [ ] Editor: markdown highlighting, live preview (headings, bold/italic, links, checkboxes), autosave, undo
-- [ ] Tabs and split panes
-- [ ] Wikilinks: `[[Note]]`, `[[Note|alias]]`, `[[Note#Heading]]`, autocomplete, click to follow, create-on-click
-- [ ] Backlinks panel
-- [ ] Unlinked mentions panel with "link it"
-- [ ] Tags (#inline + frontmatter) and tag browser
-- [ ] Frontmatter properties panel
-- [ ] Quick switcher (Ctrl+O), command palette (Ctrl+P), full-text search with highlighted snippets
-- [ ] Daily note and templates
-- [ ] Light/dark themes, keyboard navigation
-- [ ] Unit tests: parser, link resolution, link rewriting, index, mentions, search
-- [ ] E2E: open demo, edit + autosave, follow link, create-on-click, rename rewrites links, search, palette
+- [x] Open folder (File System Access), remember across sessions, watch for changes
+- [x] File tree: create, rename (rewrites inbound links), move (menu + drag and drop), delete to `.trash/`
+- [x] Editor: markdown highlighting, live preview (headings, bold/italic, links, checkboxes, bullets, quotes, code), autosave, undo
+- [x] Tabs and split panes (undo history kept per tab)
+- [x] Wikilinks: `[[Note]]`, `[[Note|alias]]`, `[[Note#Heading]]`, autocomplete (notes, aliases, headings, tags), click to follow, create-on-click
+- [x] Backlinks panel with context
+- [x] Unlinked mentions panel with "Link it"
+- [x] Tags (#inline + frontmatter, nested) and tag browser
+- [x] Frontmatter properties panel (scalar values editable in place)
+- [x] Quick switcher (Ctrl+O), command palette (Ctrl+P), full-text search with highlighted snippets and `tag:` filter
+- [x] Daily note (Alt+D) and templates (Alt+T)
+- [x] Light/dark themes, keyboard navigation (tree, palettes, menus), skip link
+- [x] Unit tests: parser, frontmatter, resolution, link rewriting, index, mentions, search, vault actions (44)
+- [x] E2E: demo vault flows (13) + real File System Access path via OPFS (edit, rename, trash, watcher)
 
 ## Phase 2: Graph
 - [ ] Global graph (Sigma + graphology): zoom, pan, drag, click to open, hover highlights neighbours

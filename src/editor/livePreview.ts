@@ -103,6 +103,11 @@ function build(view: EditorView, ctx: EditorContext): DecorationSet {
           case 'ListMark': {
             const parentList = node.node.parent?.parent?.name
             const task = node.node.nextSibling?.name === 'Task'
+            const ln = state.doc.lineAt(node.from)
+            const lead = node.from - ln.from
+            // Hanging indent so wrapped list lines align with the text, not the marker.
+            const hang = task ? 'calc(21px' : parentList === 'BulletList' ? 'calc(1.05em' : `calc(${node.to - node.from + 1}ch`
+            decos.push(Decoration.line({ attributes: { style: `padding-left: ${hang} + ${lead}ch) !important; text-indent: calc(-1 * (${hang} + ${lead}ch)))` } }).range(ln.from))
             if (isActive(node.from)) return
             if (task) {
               decos.push(hide.range(node.from, Math.min(node.to + 1, state.doc.lineAt(node.from).to)))

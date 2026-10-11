@@ -46,6 +46,9 @@ graphology + Sigma (phase 2), transformers.js in a worker (phase 3), Vitest, Pla
 - `showDirectoryPicker` cannot be driven by Playwright; e2e tests use the demo vault
   (`/?demo=1`), which runs the same code paths through the in-memory `VaultFS`.
 - Links and tags inside fenced code, inline code and HTML comments are ignored by the parser.
+- CodeMirror ignores Enter for 75 ms after the completion list opens; e2e tests wait 150 ms.
+- React StrictMode mounts the editor twice. `NoteEditor` clears `entryRef` on unmount so the
+  second mount doesn't overwrite a cached document with the new view's empty state.
 
 ## Decisions log
 
@@ -55,8 +58,17 @@ graphology + Sigma (phase 2), transformers.js in a worker (phase 3), Vitest, Pla
 - 2026-10-11 New notes created from a missing link go to the vault root (simple, predictable).
 - 2026-10-11 Link rewriting on rename keeps the link's style: a bare-name link stays bare if
   the new name is still unique, otherwise it becomes a path link. Alias and `#heading` kept.
-- 2026-10-11 File watching: `FileSystemObserver` when the browser has it, else polling
-  every 3 s plus on window focus. Our own writes are recorded so they don't echo back.
+- 2026-10-11 File watching: polling every 3 s (paused while the tab is hidden) plus on window
+  focus; `FileSystemObserver` triggers an immediate poll where the browser has it. Our own
+  writes are recorded so they don't echo back, and applying a change is idempotent anyway
+  (a file whose text equals the index is ignored).
+- 2026-10-11 Hotkeys avoid keys Chrome reserves (Ctrl+N/T/W/Tab): new note Alt+N, close tab
+  Alt+W, next/prev tab Alt+. / Alt+,, daily note Alt+D, template Alt+T, split Ctrl+\.
+- 2026-10-11 Real-folder code is tested in Playwright through the Origin Private File System,
+  which hands out the same `FileSystemDirectoryHandle` API. Dev builds expose `window.__mycel`
+  (read/exists/openHandle) for tests only.
+- 2026-10-11 Markdown-style links `[text](Note.md)` are followed on click but are not part of the
+  link graph or rename rewriting yet; wikilinks are the primary link type.
 - 2026-10-11 Writes use `createWritable()`, which Chromium writes to a swap file and
   commits on `close()` — atomic from the reader's point of view.
 - 2026-10-11 Frontmatter panel edits scalar values by replacing just that line; lists and
