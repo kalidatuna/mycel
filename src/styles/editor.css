@@ -22,9 +22,6 @@
 .editor-host .cm-line {
   padding: 0;
 }
-.editor-host .cm-activeLine {
-  background: transparent;
-}
 .editor-host .cm-cursor {
   border-left: 2px solid var(--accent);
 }

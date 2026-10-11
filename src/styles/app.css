@@ -248,7 +248,7 @@
   outline-offset: -2px;
 }
 .tree-item[aria-expanded] .tree-name {
-  font-weight: 550;
+  font-weight: 500;
 }
 .tree-name {
   overflow: hidden;
@@ -824,4 +824,8 @@ button.ref-context:hover {
 }
 .ribbon-logo {
   color: var(--text-muted);
+}
+.ref-context mark {
+  background: none;
+  color: var(--accent);
 }

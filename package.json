@@ -2,8 +2,29 @@
   "name": "mycel",
   "private": true,
   "version": "0.1.0",
-  "type": "module",
   "description": "Local-first markdown knowledge base with on-device AI",
+  "license": "MIT",
+  "author": "kalidatuna",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kalidatuna/mycel.git"
+  },
+  "homepage": "https://github.com/kalidatuna/mycel#readme",
+  "bugs": {
+    "url": "https://github.com/kalidatuna/mycel/issues"
+  },
+  "keywords": [
+    "markdown",
+    "notes",
+    "knowledge-base",
+    "local-first",
+    "wikilinks",
+    "codemirror"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
   "scripts": {
     "postinstall": "node scripts/touch-demo-vault.mjs",
     "dev": "vite",

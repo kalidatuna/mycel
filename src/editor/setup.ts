@@ -4,7 +4,7 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown'
 import { HighlightStyle, syntaxHighlighting, indentUnit } from '@codemirror/language'
 import { highlightSelectionMatches, search, searchKeymap } from '@codemirror/search'
 import { Annotation, EditorState, type Extension } from '@codemirror/state'
-import { drawSelection, EditorView, highlightActiveLine, keymap, placeholder, rectangularSelection } from '@codemirror/view'
+import { drawSelection, EditorView, keymap, placeholder, rectangularSelection } from '@codemirror/view'
 import { tags as t } from '@lezer/highlight'
 import { mycelAutocomplete } from './autocomplete'
 import type { EditorContext } from './context'
@@ -24,7 +24,6 @@ const highlight = HighlightStyle.define([
   { tag: t.monospace, fontFamily: 'var(--font-mono)' },
   { tag: t.quote, color: 'var(--text-muted)' },
   { tag: [t.processingInstruction, t.meta, t.contentSeparator], color: 'var(--text-faint)' },
-  { tag: t.list, color: 'var(--text-muted)' },
   { tag: [t.keyword, t.tagName], color: 'var(--syntax-keyword)' },
   { tag: [t.string, t.special(t.string)], color: 'var(--syntax-string)' },
   { tag: [t.comment], color: 'var(--text-faint)', fontStyle: 'italic' },
@@ -36,7 +35,6 @@ export function editorExtensions(ctx: EditorContext, onDocChange: (text: string)
     history(),
     drawSelection(),
     rectangularSelection(),
-    highlightActiveLine(),
     highlightSelectionMatches(),
     closeBrackets(),
     search({ top: true }),

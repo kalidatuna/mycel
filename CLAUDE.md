@@ -43,8 +43,8 @@ graphology + Sigma (phase 2), transformers.js in a worker (phase 3), Vitest, Pla
   by `postinstall` (for real-folder use) and read by the Vite `virtual:demo-vault` plugin.
 - Persisted directory handles need `requestPermission` from a user gesture after reload, so
   the start screen shows a "Reopen <vault>" button instead of opening silently.
-- `showDirectoryPicker` cannot be driven by Playwright; e2e tests use the demo vault
-  (`/?demo=1`), which runs the same code paths through the in-memory `VaultFS`.
+- `showDirectoryPicker` cannot be driven by Playwright; e2e tests use the demo vault and the
+  Origin Private File System (same handle API) instead.
 - Links and tags inside fenced code, inline code and HTML comments are ignored by the parser.
 - CodeMirror ignores Enter for 75 ms after the completion list opens; e2e tests wait 150 ms.
 - React StrictMode mounts the editor twice. `NoteEditor` clears `entryRef` on unmount so the
@@ -73,5 +73,9 @@ graphology + Sigma (phase 2), transformers.js in a worker (phase 3), Vitest, Pla
   commits on `close()` — atomic from the reader's point of view.
 - 2026-10-11 Frontmatter panel edits scalar values by replacing just that line; lists and
   nested values are shown read-only with a jump-to-source action.
+- 2026-10-12 Visual design is deliberately quiet: flat neutral palette, hairline borders,
+  4–6 px radius, no gradients, glow, entrance animations or pill badges. One muted accent.
+- 2026-10-12 Open-sourced under MIT at github.com/kalidatuna/mycel. CI runs typecheck, lint,
+  unit, build and e2e.
 - 2026-10-11 Tabs keep their own CodeMirror `EditorState`, so undo history survives tab
   switches. Max two split panes (left/right) — enough for the demo, simple to reason about.
