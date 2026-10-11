@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs'
-import { join, relative, sep } from 'node:path'
+import { join, relative, resolve, sep } from 'node:path'
 import type { Plugin } from 'vite'
 
 /** Exposes the demo vault as `virtual:demo-vault`: [{ path, text, mtime }]. */
@@ -21,8 +21,8 @@ export function demoVault(root: string, datesFile: string): Plugin {
     load(s) {
       if (s !== resolved) return
       const dates: Record<string, string> = existsSync(datesFile) ? JSON.parse(readFileSync(datesFile, 'utf8')) : {}
-      const files = walk(root, []).map((abs) => {
-        const path = relative(root, abs).split(sep).join('/')
+      const files = walk(resolve(root), []).map((abs) => {
+        const path = relative(resolve(root), abs).split(sep).join('/')
         this.addWatchFile(abs)
         const d = dates[path]
         return { path, text: readFileSync(abs, 'utf8'), mtime: d ? Date.parse(d) : statSync(abs).mtimeMs }
