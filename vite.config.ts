@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
-import { demoVault } from './vite-plugin-demo-vault'
+import { demoVault } from './vite-plugin-demo-vault.ts'
 
 export default defineConfig({
   plugins: [react(), demoVault('demo-vault', 'scripts/demo-dates.json')],
